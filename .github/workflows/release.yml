@@ -13,9 +13,6 @@ jobs:
   eslint-server:
     name: EsLint server
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -30,9 +27,6 @@ jobs:
     name: Test Server
     runs-on: ubuntu-latest
     needs: eslint-server
-    defaults:
-      run:
-        working-directory: server
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -64,11 +58,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/template-server
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/nest-server
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./server
+          context: ./
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
